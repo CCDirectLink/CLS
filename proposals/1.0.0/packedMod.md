@@ -50,7 +50,7 @@ This can be done e.g. by adding the packed mod to a specific loation (e.g. mods 
 * Validate package.json
 * Installation of the mod if accepted
 
-It is optional possible to ask the user for installation and/or show the information of the mod (based on the package.json file)
+It is OPTIONAL possible to ask the user for installation and/or show the information of the mod (based on the package.json file)
 
 ## Added by file association
 
@@ -58,7 +58,7 @@ __Optional__
 
 ### Setup
 
-* a: Add file association for .ccmod automatic
+* a: Add file association for .ccmod automatic [OR]
 * b: Ask user if file association should be added
 
 * Ask user if a file association already exist
@@ -68,7 +68,7 @@ __Optional__
 
 * Extraction of the zipped data
 * Validate package.json
-* Ask the user for installation and show the information of the mod (based on the package.json file)
+* Ask the user for installation and show the information of the mod (based on the package.json file) [REQUIRED]
 * Installation of the mod if accepted
 
 # Notes
