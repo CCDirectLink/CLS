@@ -46,7 +46,9 @@ __Required__
 
 This can be done e.g. by adding the packed mod to a specific loation (e.g. mods folder), use drag and drop or hand over a path to the .ccmod file to the tool.
 
-* Extraction of the zipped data
+* a: Extraction of the zipped data and store them on HDD [OR]
+* b: Store the data in memory
+
 * Validate package.json
 * Installation of the mod if accepted
 
@@ -66,7 +68,9 @@ __Optional__
 
 ### Handling
 
-* Extraction of the zipped data
+* a: Extraction of the zipped data and store them on HDD [OR]
+* b: Store the data in memory
+
 * Validate package.json
 * Ask the user for installation and show the information of the mod (based on the package.json file) [REQUIRED]
 * Installation of the mod if accepted
