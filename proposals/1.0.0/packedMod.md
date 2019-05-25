@@ -98,6 +98,9 @@ This describes how packed mods should be installed by a modloader.
 2. __Optional:__ Validate package.json (+R0030)
 3. __Optional:__ Ask to user if the mod should be installed and show it's information (requires 2)
 4. Installation of the mod if accepted
+5. __Optional:__ Inform the user if the installation failed
+
+The installation may fail if the mod is not compatible with the game version, the CLS version or dosn't implement required components or contains required data.
 
 ##### Examples
 
@@ -154,6 +157,9 @@ This describes how packed mods should be installed by a modloader. The mod was n
 2. Validate package.json
 3. Ask to user if the mod should be installed and show it's information
 4. Installation of the mod if accepted
+5. __Optional:__ Inform the user if the installation failed
+
+The installation may fail if the mod is not compatible with the game version, the CLS version or dosn't implement required components or contains required data.
 
 ##### Examples
 
