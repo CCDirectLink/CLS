@@ -62,7 +62,7 @@ This describes how packed mods should be interpreted. This can be used to show a
 
 What the tool is doing with the mod afterwards is highly sepecific. This also can be extracting the zipped data and store them on HDD (+R0030).
 
-__Examples:__
+##### Examples
 
 ```
 $ cli show path/to/mod.ccmod
@@ -98,7 +98,7 @@ This describes how packed mods should be installed by a modloader.
 3. __Optional:__ Ask to user if the mod should be installed and show it's information (requires 2)
 4. Installation of the mod if accepted
 
-__Examples:__
+##### Examples
 
 * The modloader is seaching for ccmod files in a defined mods folder
 * The path to a ccmod file is put into a form to add the mod to the game
@@ -141,7 +141,7 @@ This describes how packed mods should be interpreted. This can be used to show a
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
 
-__Examples:__
+##### Examples
 
 * Doubleclick on a ccmod file to show and edit mod information.
 
@@ -154,7 +154,7 @@ This describes how packed mods should be installed by a modloader. The mod was n
 3. Ask to user if the mod should be installed and show it's information
 4. Installation of the mod if accepted
 
-__Examples:__
+##### Examples
 
 * Doubleclick on a ccmod file to install the mod
 
