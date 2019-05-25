@@ -53,9 +53,9 @@ __Methods:__
 * Manually input the path to a ccmod file.
 * Manually input the URL to a ccmod file.
 
-#### Interpreter
+#### Any Interpreter tool
 
-This describes how packed mods should be interpreted. This can be used to show additional information, change the mod, publish it into a database or interprete the mod for other purposes. This method will not install the mod.
+This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
 
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
@@ -89,7 +89,7 @@ $ cli show path/to/mod.ccmod -json
 * Click on [Load mod] in an tool and input the path for example.ccmod to show and edit mod information.
 * Click on [Load mod] in an tool and extract the data to a specific path on HDD (+R0030).
 
-#### Installation
+#### Installation via Modloader
 
 This describes how packed mods should be installed by a modloader.
 
@@ -134,9 +134,9 @@ Possiblities if no program is associated:
 * Ask the user if the tool should be associated instead (only once) and if register it if accepted
 * Do not register the tool if declined
 
-#### Interpreter
+#### Any Interpreter tool
 
-This describes how packed mods should be interpreted. This can be used to show additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This method will not install the mod.
+This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
 
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
@@ -145,7 +145,7 @@ This describes how packed mods should be interpreted. This can be used to show a
 
 * Doubleclick on a ccmod file to show and edit mod information.
 
-#### Installation
+#### Installation via Modloader
 
 This describes how packed mods should be installed by a modloader. The mod was not added manual (e.g. by placing it in a specific mod folder). So this action requires the user to accept the installtion of the mod.
 
