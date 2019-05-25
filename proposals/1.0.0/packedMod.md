@@ -55,12 +55,12 @@ __Methods:__
 
 #### Interpreter
 
-This describes how packed mods should be interpreted. This can be used to show additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This method will not install the mod.
+This describes how packed mods should be interpreted. This can be used to show additional information, change the mod, publish it into a database or interprete the mod for other purposes. This method will not install the mod.
 
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
 
-What the tool is doing with the mod afterwards is highly sepecific. This also can be excracting the zipped data and store them on HDD (+R0030).
+What the tool is doing with the mod afterwards is highly sepecific. This also can be extracting the zipped data and store them on HDD (+R0030).
 
 __Examples:__
 
