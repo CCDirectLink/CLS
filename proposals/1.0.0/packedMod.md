@@ -158,6 +158,104 @@ This describes how packed mods should be installed by a modloader. The mod was n
 
 * Doubleclick on a ccmod file to install the mod
 
+## Mod Information
+
+This section describes what information the user should receive when prompting for the installation.
+
+### Minimal Content
+
+* Name
+
+  Gives the user the ability to identify which mod will be installed.
+
+* Version (if available)
+
+  Gives the user the ability to check if the right version will be installed.
+
+* Description (if available)
+
+  Should describes the function of the mod.
+
+* Author & Contact information (if available)
+
+  Gives the user the ability to check for the right author. Usefull if there exists mods with the same name.
+
+* Mod Identifier (`MI`) [AND] Mod file Path (`MP`)
+
+  Gives the user the ability to check if the right mod is installed. Usefull for testing mods without changing the version or other characteristics to keep them apart.
+
+* Game Identifier (`GI`) [AND/OR] Path of the modded game instance (`GP`)
+
+  It is possible to have multiple modded games. Makes it possible to check that the mod is installed for the correct instance. It is recommended to also show the Game Identifier (`GI`).
+
+### Game Identifier (GI)
+
+A abbreviation for the game. This id should be unique for the device.
+
+1. Requires the path of the game (including the executable) as string (`GP`)
+2. Hash the string with `sha256`
+3. The full hash is the `long id` the last 8 characters are the `short id`
+
+* Any path must be absolute
+* Do not use any environment variable or path abbreviation
+
+This prevents ambiguous paths.
+
+__Game path Examples:__
+
+* macOS: `/Users/myuser/Library/Application Support/Steam/steamapps/common/CrossCode/CrossCode.app` (not `~/Library/...`)
+* Windows: `C:\Program Files (x86)\Steam\steamapps\common\CrossCode\CrossCode.exe` (not `%programfiles(x86)%\Steam\...`)
+* Linux: `/home/myuser/.steam/steam/SteamApps/common/CrossCode/CrossCode` (not `~/.steam/...`)
+
+### Mod Identifier (MI)
+
+Mods can be moved and have no fixed location like the game. Therefor the `sha256`-Hash (see: `sha256sum`) of the mod file (`.ccmod`) will be used instead to identify the mod. Unpacked mods have to use the absolute path (without the use of environment variable or path abbreviation) of the `package.json` instead to provide the same amount of information as packed mods (`MP`).
+
+If packed:
+
+1. Hash the .ccmod file with `sha256`
+2. The full hash is the `long id` the last 8 characters are the `short id`
+
+If unpacked:
+
+1. Requires the path of the mod (including `package.json`) as string (`MP`)
+2. Hash the string with `sha256`
+3. The full hash is the `long id` the last 8 characters are the `short id`
+
+__Examples – Mod Installation:__
+
+```
+$ cli add mod.ccmod
+CrossCode Mod
+
+ModName - v 1.0.0
+mod description
+
+CCDirectLinkAuthor <info@c2dl.info>
+
+Mod: c92b4510 (/User/myuser/documents/example.ccmod)
+Installed for: cb7dcbc5 (/Users/myuser/Library/Application Support/Steam/steamapps/common/CrossCode/CrossCode.app)
+
+Install mod? (y/n):
+```
+
+__Comparison – Unpacked:__
+
+```
+C:> cli add mods\example
+CrossCode Mod
+
+ModName - v 1.0.0
+mod description
+
+CCDirectLinkAuthor <info@c2dl.info>
+
+Mod: d38bdb9f (C:\Program Files (x86)\Steam\steamapps\common\CrossCode\mods\example\package.json)
+Installed for: b1dfa4d4 (C:\Program Files (x86)\Steam\steamapps\common\CrossCode\CrossCode.exe)
+
+Install mod? (y/n):
+```
+
 ## Notes
 
 Conflict handling and the installation of already installed mods is handled tool specific.
