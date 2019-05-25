@@ -33,6 +33,7 @@ Standard for packed mods
 * __R0030__: [Dependency] fs (read `package.json`, move folder, file edit)
 * __R0040__: Tool packed as .app (macOS specific)
 * __R0050__: Possibility to manually trigger the file association setup
+* __R0050__: [Dependency] Hash-Library (`sha256`)
 
 ## Installation/Interpreter methods
 
@@ -94,7 +95,7 @@ $ cli show path/to/mod.ccmod -json
 This describes how packed mods should be installed by a modloader.
 
 1. Extraction the zipped data and store it on HDD [OR] in memory
-2. __Optional:__ Validate package.json
+2. __Optional:__ Validate package.json (+R0030)
 3. __Optional:__ Ask to user if the mod should be installed and show it's information (requires 2)
 4. Installation of the mod if accepted
 
