@@ -14,9 +14,11 @@ A specification which exactly defines specific terms, and does not define legacy
 
 - Less likelihood to use outdated mechanisms from the old era
 
+- APIs defined in other specifications may gain reference implementations using this specification - these can then become the only implementation of those APIs, preventing fragmentation.
+
 ### Disadvantages
 
-- Per-modloader extensions not covered (Though this may not be a disadvantage)
+- Per-modloader extensions not covered, theoretically limiting features for more portable mods.
 
 ### Regarding Implementation
 
@@ -92,16 +94,6 @@ The 'phases' are:
 2. `postload`. This is executed after game.compiled.js is executed, but before window.startCrossCode.
 3. `ThisIsAVeryTemporaryNameThatWeNeedToAgreeOn` (Name subject to change. Unspecified.). This occurs directly before `ig.main`, which ensures the whole game has loaded and effectively gives the code free reign over Cubic Impact structures.
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
-
-### APIs
-
-No APIs are specified by this *particular* specification.
-
-However, APIs defined in other specifications may gain reference implementations using this specification.
-
-In this case, if licensing is favourable, it is preferable to use these decoupled reference implementations - as mods - rather than custom per-mod-loader implementations.
-
-In turn, the decoupled reference implementations themselves become standards and we don't have to handle multiple parallel implementations.
 
 ---
 
