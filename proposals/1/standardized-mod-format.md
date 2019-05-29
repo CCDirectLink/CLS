@@ -43,7 +43,12 @@ It has the following elements:
 ```
 {
  "version": <Semver-compliant version string>,
- "dependencies": <Optional Object - keys are mod IDs, values are semver-compliant version constraints>,
+ "ccmodDependencies": <Optional Object - keys are mod IDs, values are semver-compliant version constraints - This is used between different mods>,
+ "dependencies": <
+  Optional Object - due to compatibility, this is a bit awkward
+  If ccmodDependencies is provided, keys are Node modules, values are semver-compliant version constraints
+  If ccmodDependencies is NOT provided, this replaces that, and has no function by itself
+ >,
 
  "name": <Optional human-readable string - otherwise, the directory name is used>,
  "description": <Optional human-readable string>,
@@ -68,7 +73,21 @@ Patch files have the `.json.patch` extension, and patch the relevant `.json` ass
 
 Patch files are a tree of objects.
 
-(If the `patch-steps` proposal becomes part of CLS, it then also becomes a valid patch format.)
+Running a patch file follows a recursive routine.
+
+This routine has the form (current patch object, current target object).
+
+The current target object is treated the same regardless of actual type.
+
+The routine is:
+
+For each key in the current patch object...
+
+1. If the current target's value for the key is undefined, set it to the value for the key in the patch object.
+2. Else, if the patch object's value for the key is an Object (and not a subclass - think boxed type coercion), apply the algorithm for (the current target's value for the key, the patch object's value for the key).
+3. Else, set the current target's value for the key to the value for the key in the patch object.
+
+Note from the future: If the `patch-steps` proposal becomes part of CLS, it then also becomes a valid patch format.
 
 ### Virtual Dependencies
 
