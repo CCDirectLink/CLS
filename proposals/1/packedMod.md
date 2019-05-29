@@ -4,7 +4,7 @@ Standard for packed CrossCode mods. This should simplify sharing and installatio
 
 ## Current Situation / Problems
 
-Mods have to be unzip by the user and installed my manually moving them into the mods folder. "Packed mods" are not standartized (rar, 7zip, tar.gz, ...). Not every OS supports every format.
+Mods have to be unzip by the user and installed my manually moving them into the mods folder. "Packed mods" are not standardized (rar, 7zip, tar.gz, ...). Not every OS supports every format.
 
 ## Solution
 
@@ -16,20 +16,20 @@ Standard for packed mods
 ### Advantage
 
 * Simplified installation (file association)
-* Standardised container format and structure
+* Standardized container format and structure
 * Easy purpose recognition after downloads (`What was this for?`)
 
 ### Disadvantage
 
 * More dependencies (if the optional part is implemented)
-* System/OS dependend parts (if the optional part is implemented)
+* System/OS dependent parts (if the optional part is implemented)
 * Difficulties in testing increase (if the optional part is implemented)
 * Higher programming costs
 
 ## Requirements and dependencies
 
 * __R0010__: [Dependency] Library to unzip the `ccmod` file (e.g. `zlib` - <https://nodejs.org/api/zlib.html>)
-* __R0020__: [Dependency] Library to access windows regestry (e.g. `winreg` - <https://www.npmjs.com/package/winreg>)
+* __R0020__: [Dependency] Library to access windows registry (e.g. `winreg` - <https://www.npmjs.com/package/winreg>)
 * __R0030__: [Dependency] fs (read `package.json`, move folder, file edit)
 * __R0040__: Tool packed as .app (macOS specific)
 * __R0050__: Possibility to manually trigger the file association setup
@@ -37,13 +37,13 @@ Standard for packed mods
 
 ## Installation/Interpreter methods
 
-The installation or interpretation of packed mods in any kind is seperated into two different methods.
+The installation or interpretation of packed mods in any kind is separated into two different methods.
 
 ### Automatic or manually
 
 This method describes the possibility to install or interpret a packed mod via interaction with a tool or by automatisms. The second method is optional so this method is the minimal requirement to work with packed mods.
 
-__Implementaion:__ Required
+__Implementation:__ Required
 
 __Minimal requirements & dependencies:__ R0010
 
@@ -56,12 +56,12 @@ __Methods:__
 
 #### Any Interpreter tool
 
-This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
+This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a database or interpreted the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
 
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
 
-What the tool is doing with the mod afterwards is highly sepecific. This also can be extracting the zipped data and store them on HDD (+R0030).
+What the tool is doing with the mod afterwards is highly specific. This also can be extracting the zipped data and store them on HDD (+R0030).
 
 ##### Examples
 
@@ -69,8 +69,8 @@ What the tool is doing with the mod afterwards is highly sepecific. This also ca
 $ cli show path/to/mod.ccmod
 
 CrossCode mod
-modtitle v 1.0.0
-moddescription
+mod-title v 1.0.0
+mod-description
 
 Required
 - CrossCode 1.0.0
@@ -100,25 +100,25 @@ This describes how packed mods should be installed by a modloader.
 4. Installation of the mod if accepted
 5. __Optional:__ Inform the user if the installation failed
 
-The installation may fail if the mod is not compatible with the game version, the CLS version or dosn't implement required components or contains required data.
+The installation may fail if the mod is not compatible with the game version, the CLS version or doesn't implement required components or contains required data.
 
 ##### Examples
 
-* The modloader is seaching for ccmod files in a defined mods folder
+* The modloader is searching for ccmod files in a defined mods folder
 * The path to a ccmod file is put into a form to add the mod to the game
 
 
 ### File association
 
-The tool is setting up the system to load ccmod files with a tool by adding the tool to the file association list. This allows the user to install or interpert packed mods with a simple doubleclick on the packed mod.
+The tool is setting up the system to load ccmod files with a tool by adding the tool to the file association list. This allows the user to install or interpert packed mods with a simple double-click on the packed mod.
 
-__Implementaion:__ Optional
+__Implementation:__ Optional
 
 __Minimal requirements & dependencies:__ R0010, R0020, R0030, R0040, R0050
 
 __Methods:__
 
-* Load ccmod files with a doubleclick
+* Load ccmod files with a double-click
 
 #### Setup
 
@@ -126,13 +126,13 @@ Defines the setup of the ccmod file association.
 
 1. Check if a program is already associated with ccmod
 
-Possiblities if a program is associated:
+Possibilities if a program is associated:
 
 * Skip the setup
 * Ask the user if the tool should be associated instead (only once) and if register it if accepted
 * Do not register the tool if declined
 
-Possiblities if no program is associated:
+Possibilities if no program is associated:
 
 * Set the file association automatic
 * Ask the user if the tool should be associated instead (only once) and if register it if accepted
@@ -140,18 +140,18 @@ Possiblities if no program is associated:
 
 #### Any Interpreter tool
 
-This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a databse or interprete the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
+This describes how packed mods should be interpreted. This can be used for tools that are showing additional information, change the mod, publish it into a database or interpreted the mod for other purposes. This is valid for every action and tool that is not installing the mod. Tools that are interpreter and installer at the same time have to combine both parts. The part `Installation via Modloader` is only required after triggering the installation. The sections 1 and 2 are already done and don't need to be repeated.
 
 1. Extraction the zipped data and store it in memory
 2. Validate package.json
 
 ##### Examples
 
-* Doubleclick on a ccmod file to show and edit mod information.
+* Double-click on a ccmod file to show and edit mod information.
 
 #### Installation via Modloader
 
-This describes how packed mods should be installed by a modloader. The mod was not added manual (e.g. by placing it in a specific mod folder). So this action requires the user to accept the installtion of the mod.
+This describes how packed mods should be installed by a modloader. The mod was not added manual (e.g. by placing it in a specific mod folder). So this action requires the user to accept the installation of the mod.
 
 1. Extraction the zipped data and store it on HDD [OR] in memory
 2. Validate package.json
@@ -163,7 +163,7 @@ The installation may fail if the mod is not compatible with the game version, th
 
 ##### Examples
 
-* Doubleclick on a ccmod file to install the mod
+* Double-click on a ccmod file to install the mod
 
 ## Mod Information
 
@@ -185,11 +185,11 @@ This section describes what information the user should receive when prompting f
 
 * Author & Contact information (if available)
 
-  Gives the user the ability to check for the right author. Usefull if there exists mods with the same name.
+  Gives the user the ability to check for the right author. Useful if there exists mods with the same name.
 
 * Mod Identifier (`MI`) [AND] Mod file Path (`MP`)
 
-  Gives the user the ability to check if the right mod is installed. Usefull for testing mods without changing the version or other characteristics to keep them apart.
+  Gives the user the ability to check if the right mod is installed. Useful for testing mods without changing the version or other characteristics to keep them apart.
 
 * Game Identifier (`GI`) [AND/OR] Path of the modded game instance (`GP`)
 
