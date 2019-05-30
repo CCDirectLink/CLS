@@ -206,7 +206,7 @@ A abbreviation for the game. This id should be unique for the device.
 * Any path must be absolute
 * Do not use any environment variable or path abbreviation
 
-This prevents ambiguous paths.
+This prevents ambiguous paths. __Do not use the GI-Hash to identify game instances across multiple devices. Use it only to differentiate multiple Game instances.__ The ID can for example be used as key for a Database of `current known game instances` or similar use cases.
 
 __Game path Examples:__
 
@@ -216,7 +216,7 @@ __Game path Examples:__
 
 ### Mod Identifier (MI)
 
-Mods can be moved and have no fixed location like the game. Therefor the `sha256`-Hash (see: `sha256sum`) of the mod file (`.ccmod`) will be used instead to identify the mod. Unpacked mods have to use the absolute path (without the use of environment variable or path abbreviation) of the `package.json` instead to provide the same amount of information as packed mods (`MP`).
+Mods can be moved and have no fixed location like the game. Therefor the `sha256`-Hash (see: `sha256sum`) of the mod file (`.ccmod`) will be used instead to identify the mod. Unpacked mods have to use the absolute path (without the use of environment variable or path abbreviation) of the `package.json` instead to provide the same amount of information as packed mods (`MP`). __Do not use the MI-Hash for unpacked or packed mods to identify mods across multiple devices. Use it only to differentiate Mods.__ The ID can for example be used as key for a `current loaded`-Database or similar use cases.
 
 If packed:
 
