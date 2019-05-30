@@ -47,7 +47,7 @@ It has the following elements:
  "dependencies": <
   Optional Object - due to compatibility, this is a bit awkward
   If ccmodDependencies is provided, keys are Node modules, values are semver-compliant version constraints
-  If ccmodDependencies is NOT provided, this replaces that, and has no function by itself
+  If ccmodDependencies is NOT provided, this key is effectively renamed to it - meaning keys are mod IDs, not Node modules.
  >,
 
  "name": <Optional human-readable string - otherwise, the directory name is used>,
