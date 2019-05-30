@@ -53,9 +53,11 @@ It has the following elements:
  "name": <Optional human-readable string - otherwise, the directory name is used>,
  "description": <Optional human-readable string>,
 
- "main": <Optional filename of a script. "mod.js" loads the file "mod.js" within the mod folder>,
  "preload": <Optional filename of a script>,
  "postload": <Optional filename of a script>,
+ "prestart": <Optional filename of a script>,
+ "main": <Optional filename of a script. For example, "mod.js" loads the file "mod.js" within the mod folder>,
+
  "usesRequire": <Optional boolean - if true, this mod uses the 'require' function. Defaults to true>,
 
  "assets": <
@@ -111,7 +113,7 @@ The 'phases' are:
 
 1. `preload`. This is executed before game.compiled.js is executed.
 2. `postload`. This is executed after game.compiled.js is executed, but before window.startCrossCode.
-3. `ThisIsAVeryTemporaryNameThatWeNeedToAgreeOn` (Name subject to change. Unspecified.). This occurs directly before `ig.main`, which ensures the whole game has loaded and effectively gives the code free reign over Cubic Impact structures.
+3. `prestart` (Name subject to change) This occurs directly before `ig.main`, which ensures the whole game has loaded and effectively gives the code free reign over Cubic Impact structures.
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
 
 ---
