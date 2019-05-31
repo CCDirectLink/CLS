@@ -4,7 +4,7 @@ Standard for packed CrossCode mods. This should simplify sharing and installatio
 
 ## Current Situation / Problems
 
-Mods have to be unzip by the user and installed my manually moving them into the mods folder. "Packed mods" are not standardized (rar, 7zip, tar.gz, ...). Not every OS supports every format.
+Mods have to be unzip by the user and installed by manually moving them into the mods folder. "Packed mods" are not standardized (rar, 7zip, tar.gz, ...). Not every OS supports every format.
 
 ## Solution
 
