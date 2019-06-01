@@ -62,8 +62,9 @@ It is a JSON file, with an object containing the following keys ('Optional' allo
  "postload": <Optional filename of a script>,
  "prestart": <Optional filename of a script>,
  "main": <Optional filename of a script. For example, "mod.js" loads the file "mod.js" within the mod folder>,
+ "module": <Optional boolean - if true, all scripts are loaded as ES6 modules, otherwise they aren't. Defaults to true>,
 
- "usesRequire": <Optional boolean - if true, this mod uses the 'require' function. Defaults to true>,
+ "usesRequire": <Optional boolean - if true, "require" is being used by the mod, otherwise it isn't. Defaults to true>,
 }
 ```
 
@@ -106,6 +107,8 @@ There is a virtual dependency that is standardized and thus compliant, however: 
 
 There are a few 'phases' to mod loading.
 Each 'phase' can have scripts.
+
+Note that loading *and execution* of the scripts for a mod in a given phase are both part of that mod's loading for that phase.
 
 Within a given 'phase', mods must be loaded in dependency order.
 The behavior for a circular dependency situation is undefined.
