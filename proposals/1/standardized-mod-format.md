@@ -58,15 +58,17 @@ It is a JSON file, with an object containing the following keys ('Optional' allo
 
  "description": <Optional human-readable string>,
 
- "preload": <Optional filename of a script>,
  "postload": <Optional filename of a script>,
- "prestart": <Optional filename of a script>,
  "main": <Optional filename of a script. For example, "mod.js" loads the file "mod.js" within the mod folder>,
- "module": <Optional boolean - if true, all scripts are loaded as ES6 modules, otherwise they aren't. Defaults to true>,
+ "module": <Optional boolean - if true, all scripts are loaded as ES6 modules, otherwise they aren't. Defaults to false>,
 
  "usesRequire": <Optional boolean - if true, "require" is being used by the mod, otherwise it isn't. Defaults to true>,
 }
 ```
+
+Note that additional fields may be present.
+
+It is not required for a modloader to interpret these fields, but the modloader *may* interpret them.
 
 ### Asset Handling
 
@@ -116,8 +118,10 @@ The behavior for a circular dependency situation is undefined.
 The 'phases' are:
 
 1. `preload`. This is executed before game.compiled.js is executed.
+    (There is no attribute for this phase - it exists for reference)
 2. `postload`. This is executed after game.compiled.js is executed, but before `window.startCrossCode`.
-3. `prestart` (Name subject to change) This occurs before `ig.main` in a hook wrapping `ig.main`, which ensures the whole game has loaded and effectively gives the code free reign over Cubic Impact structures.
+3. `prestart`. This is executed in a hook wrapping `ig.main`, before `ig.main` itself.
+   (There is no attribute for this phase - it exists for reference)
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
 
 ---
