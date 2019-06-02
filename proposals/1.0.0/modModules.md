@@ -17,7 +17,7 @@ It is possible for a modloader to hook require add a node_module search path for
 #### Disadvantages
 
 * Can cause a lot of bloat because each mod needs to come with all dependencies
-* Does not work with delayed requires because `document.currentScript` will loose it's value.
+* Does not work with delayed requires because `document.currentScript` will lose it's value.
 
 ### Global modules
 
@@ -35,7 +35,7 @@ A modloader can add all node_module folders of all mods to the require path.
 
 ### Per mod with fallback
 
-A modloader can used the method described in "Module resolution per mod" until `document.currentScript` looses it's value and then fall back to the method of "Global modules".
+A modloader can used the method described in "Module resolution per mod" until `document.currentScript` loses it's value and then fall back to the method of "Global modules".
 
 #### Advantages
 
