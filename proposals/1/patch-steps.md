@@ -106,9 +106,9 @@ If the index is not present, the content is appended.
 
 ### IMPORT
 
-`IMPORT` steps have a string property "src", and optionally "index" (another string property) along with "path" (an array of keys).
+`IMPORT` steps have a string property "src" (a `assets/`-less filename such as `"data/database.json"`), and optionally "index" (another string property) along with "path" (an array of keys).
 
-JSON is loaded from the file specified with "src" (the value does *not* contain ig.root, that's prepended as usual).
+JSON is loaded from the file specified with "src".
 
 Then, if "path" is present, the value is indexed by the first key in path, and then that value is indexed by the second ...and so on
 
