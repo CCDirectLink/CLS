@@ -33,7 +33,7 @@ Standard for packed mods
 * __R0030__: [Dependency] fs (read `package.json`, move folder, file edit)
 * __R0040__: Tool packed as .app (macOS specific)
 * __R0050__: Possibility to manually trigger the file association setup
-* __R0050__: [Dependency] Hash-Library (`sha256`)
+* __R0060__: [Dependency] Hash-Library (`sha256`)
 
 ## Installation/Interpreter methods
 
@@ -114,7 +114,7 @@ The tool is setting up the system to load ccmod files with a tool by adding the 
 
 __Implementation:__ Optional
 
-__Minimal requirements & dependencies:__ R0010, R0020, R0030, R0040, R0050
+__Minimal requirements & dependencies:__ R0010, R0020, R0030, R0040, R0050, R0060
 
 __Methods:__
 
