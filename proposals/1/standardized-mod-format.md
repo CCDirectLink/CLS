@@ -59,7 +59,6 @@ It is a JSON file, with an object containing the following keys ('Optional' allo
  "description": <Optional human-readable string>,
 
  "postload": <Optional filename of a script>,
- "main": <Optional filename of a script. For example, "mod.js" loads the file "mod.js" within the mod folder>,
  "module": <Optional boolean - if true, all scripts are loaded as ES6 modules, otherwise they aren't. Defaults to false>,
 
  "usesRequire": <Optional boolean - if true, "require" is being used by the mod, otherwise it isn't. Defaults to true>,
@@ -123,6 +122,7 @@ The 'phases' are:
 3. `prestart`. This is executed in a hook wrapping `ig.main`, before `ig.main` itself.
    (There is no attribute for this phase - it exists for reference)
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
+   (There is no attribute for this phase - it exists for reference)
 
 ---
 
