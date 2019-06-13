@@ -31,9 +31,11 @@ This in particular applies to how CCLoader handles patch files via `simplify`.
 
 ## Mod Format
 
-A mod is in a directory. The directory's name is irrelevant.
+A mod is in a directory (virtual or otherwise). The directory's name is irrelevant.
 
 The directory then contains a file called "package.json" (see The package.json format).
+
+The directory may contain a sub-directory called "assets" (see Asset Handling).
 
 ### The package.json format
 
@@ -65,20 +67,23 @@ It is a JSON file, with an object containing the following keys ('Optional' allo
 }
 ```
 
-Note that additional fields may be present.
+Note that additional unspecified fields may also be present.
 
-It is not required for a modloader to interpret these fields, but the modloader *may* interpret them.
+These fields may have implementation-dependent effects, including changing behaviors defined in this specification.
 
 ### Asset Handling
 
-Mods are scanned for available assets.
+If the mod has a sub-directory called `assets`, then that directory is scanned for available assets.
 
-Assets are defined as those files with extensions: `.png`, `.json`, `.json.patch`, `.ogg`.
-Other extensions may be added later, but note that adding `.js` may cause conflicts due to files added unnecessarily.
+Structurally, that sub-directory mirrors the CrossCode `assets` directory.
+
+The scan finds some subset of the files in that sub-directory (recursively, so it includes sub-sub-directories and so on), and hooks at least CrossCode's image loading, audio loading, and AJAX requests to redirect requests for files with those names.
+
+The subset must contain least those files with extensions: `.png`, `.json`, `.json.patch`, `.ogg`.
+
+Other extensions may also be supported.
 
 Regarding `.json.patch` files, these are treated specially. See Patch Files for more details.
-
-The mod's directory tree structurally mirrors the `assets` directory of CrossCode.
 
 ### Patch Files
 
@@ -103,6 +108,9 @@ For each key in the current patch object...
 
 Mods that use modloader-specific virtual dependencies, such as "ccloader", are not compliant.
 There is a virtual dependency that is standardized and thus compliant, however: "crosscode". This specifies a version constraint on the CrossCode version in use.
+
+Some virtual dependencies may be defined by APIs that have reference mod implementations.
+In this case, the virtual dependency is to be treated as a mod integrated into the modloader and is not non-compliant.
 
 ### The Load Order
 
