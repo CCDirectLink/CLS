@@ -111,7 +111,7 @@ Each 'phase' can have scripts.
 
 Note that loading *and execution* of the scripts for a mod in a given phase are both part of that mod's loading for that phase.
 
-Within a given 'phase', mods must be loaded in dependency order.
+Within a given 'phase', mods must be loaded in 'dependency order' - the dependencies of a mod must be loaded and run before that mod.
 The behavior for a circular dependency situation is undefined.
 
 The 'phases' are:
