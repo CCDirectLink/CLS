@@ -1,4 +1,4 @@
-# Standardized Mod Format (DRAFT!)
+# Standardized Mod Format
 
 ## Description Of Issue
 
@@ -131,6 +131,12 @@ The 'phases' are:
    (There is no attribute for this phase - it exists for reference)
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
    (There is no attribute for this phase - it exists for reference)
+
+## Conformance Tests
+
+A pair of mods implementing a conformance test is available at: https://github.com/20kdc/CLS-20kdc-Code/blob/master/mods/
+
+These mods are CCStandardizedModsConformanceTest and CCZZStandardizedModsConformanceTestDependency.
 
 ---
 
