@@ -122,6 +122,14 @@ Any implementation that supports full file replacement/addition should allow the
 
 If an imported JSON file should be patched before import, however, is at the discretion of the implementation, as a particular issue that could come up here is unexpected circular dependencies.
 
+### INCLUDE
+
+`INCLUDE` steps have a string property "src", a path inside the mod's directory. (The value "package.json" would be erroneous due to it being of the wrong format, but would point at the intended file.)
+
+This path points at a JSON file.
+This JSON is treated as a Patch Steps patch and executed on the Current Value.
+Note, however, that this occurs in a separate Patch Steps interpreter, so the Current Value stack is not shared.
+
 ## Reference Implementations
 
 A reference CommonJS module implementation is available at:
