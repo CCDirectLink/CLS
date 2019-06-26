@@ -106,15 +106,17 @@ If the index is not present, the content is appended.
 
 ### IMPORT
 
-`IMPORT` steps have a string property "src" (a `assets/`-less filename such as `"data/database.json"`), and optionally "index" (another string property) along with "path" (an array of keys).
+`IMPORT` steps have a string property "src" (a `assets/`-less filename such as `"data/database.json"`), optionally "index" (another string property) and optionally "path" (an array of keys).
 
-JSON is loaded from the file specified with "src".
+JSON is loaded from the file specified with "src". The loaded JSON value (be it an array or object) is called the Loaded Value.
 
-Then, if "path" is present, the value is indexed by the first key in path, and then that value is indexed by the second ...and so on
+If "path" is present, it's iterated over. For each entry in "path", the Loaded Value is indexed by that item, and the result of that indexing replaces the Loaded Value.
 
-Finally, if "index" is present, the property of the Current Value targetted by "index" is then set to the result.
+As such, a "path" of `["a", 0]` or `["a", "0"]` on the initial Loaded Value of `{"a": ["hi"]}` results in the Loaded Value becoming the `"hi"` string.
 
-If it is not present, each item of the result is appended (if the Current Value is an array) or the keys are copied in (if the Current Value is an object)
+Finally, if "index" is present, the property of the Current Value targetted by "index" is then set to the Loaded Value.
+
+If it is not present, each item of the Loaded Value is appended (if the Loaded Value is an array) or the keys are copied in (if the Loaded Value is an object).
 
 The primary use of this is for cleanup of manual editing workflows, but it can also be useful to cherry-pick objects to avoid copyright issues.
 
