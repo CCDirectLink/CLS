@@ -132,6 +132,14 @@ This path points at a JSON file.
 This JSON is treated as a Patch Steps patch and executed on the Current Value.
 Note, however, that this occurs in a separate Patch Steps interpreter, so the Current Value stack is not shared.
 
+### INIT_KEY
+
+`INIT_KEY` steps have a string property "index", and an arbitrary value property "content".
+
+If the Current Value does not have the key "index", as determined by `index in currentValue`, then it is set to "content".
+
+This is useful to create blank arrays/objects for common use.
+
 ## Reference Implementations
 
 A reference CommonJS module implementation is available at:
