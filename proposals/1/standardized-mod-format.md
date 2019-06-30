@@ -134,9 +134,6 @@ The 'phases' are:
 1. `preload`. This is executed before game.compiled.js is executed.
 2. `postload`. This is executed after game.compiled.js is executed and before game onload (i.e. before `ig.modules["dom.ready"].loaded` is true).
 3. `prestart`. This is executed in a hook wrapping `ig.main`, before `ig.main` itself.
-4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
-
-There's no attribute for `main` defined in this specification.
 
 ## Conformance Tests
 
