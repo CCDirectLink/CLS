@@ -58,97 +58,170 @@ There is the Current Value, and a stack which backs up the Current Value to retu
 
 The final target of the Current Value doesn't matter - it's merely used as an editing cursor.
 
-### ENTER
+## File Paths
 
-`ENTER` steps push the Current Value onto the stack, then replace the Current Value with a property of it, thus 'entering' that property.
+File paths in Patch Steps are checked to see if they are valid absolute URLs.
 
-They have a single additional string property, "index".
+If they are, then the result depends on the protocol.
 
-This property is a property name of the current object or array.
+Importantly, only the protocol and the pathname in the URL matter - other details are ignored.
 
-JavaScript rules mean that "0" and 0 are equivalent, and thus this can access array elements.
+For the `mod:` protocol, the pathname is a file relative to the mod's directory.
+(`mod:package.json` would be the mod's package.json file)
 
-### EXIT
+For the `game:` protocol, the pathname is a file in the game's "virtual filesystem" - this is the filesystem after asset overrides and patches have been applied.
+(`data/database.json` would be the Database)
 
-`EXIT` steps pop a new Current Value off the stack, replacing it.
+Other protocols aren't defined.
 
-This allows going back to a parent value to modify other sub-values.
+If the path is not an absolute URL, the string as a whole is treated as the pathname, and is given a contextual default protocol.
+This default protocol is specified in the relevant step's details.
 
-### SET_KEY
+## Step Formats
 
-`SET_KEY` steps have two additional properties:
+```
+// In practice, these are functionally identical,
+//  and weak JavaScript typing causes this to be readily apparent.
+declare type JSONIndex = string | number;
 
-"index" (containing the property name)
+declare type PatchStepsPatch = PatchStep[];
 
-And optionally "content" (Arbitrary content value)
+declare type PatchStep =
+	PatchStepEnter |
+	PatchStepExit |
+	PatchStepSetKey |
+	PatchStepInitKey |
+	PatchStepRemoveArrayElement |
+	PatchStepAddArrayElement |
+	PatchStepImport |
+	PatchStepInclude
+;
 
-The property in the Current Value is set to a copy of the content.
+/**
+ * Abstract machine state for a Patch Steps interpreter;
+ *  not a formal part of the format, merely a guideline.
+ * Do not confuse with internal structures used by any specific implementation.
+ */
+declare class PatchStepMachineState {
+	/*
+	 * Decodes a path or URL according to the 'File Paths' chapter and retrieves that object.
+	 * The contextual conversion is specified as defaultProtocol.
+	 */
+	loader: (defaultProtocol: string, path: string) => Promise<object>;
+	// The current value being operated on.
+	currentValue: object;
+	// Used by ENTER/EXIT to place and retrieve parent values.
+	parentStack: object[];
+}
 
-If content is not provided, the property is deleted.
+/*
+ * The ENTER patch step, should index not be an array, pushes the Current Value onto the parent stack,
+ *  and then sets the Current Value to currentValue[index].
+ * However, if the "index" is an array, this instead acts as multiple ENTER patch steps,
+ *  one with each element of the array replacing the index.
+ */
+declare type PatchStepEnter = {
+	"type": "ENTER";
+	"index": JSONIndex[] | JSONIndex;
+};
 
-Note that SET_KEY with a non-numeric index is valid on Arrays, but will probably end badly.
+/*
+ * The EXIT patch step is the inverse of the ENTER patch step.
+ * It sets the Current Value to a value popped off the parent stack.
+ * Like ENTER, it can be applied multiple times.
+ * If 'count' is present, EXIT will be applied that many times.
+ */
+declare type PatchStepExit = {
+	"type": "EXIT";
+	"count"?: number;
+};
 
-### REMOVE_ARRAY_ELEMENT
+/*
+ * The SET_KEY patch step sets a property of the Current Value.
+ * If "content" is not provided, then the property is deleted.
+ * This is in effect:
+ * currentValue[index] = content;
+ *  and
+ * delete currentValue[index];
+ */
+declare type PatchStepSetKey = {
+	"type": "SET_KEY";
+	"index": JSONIndex;
+	"content"?: any;
+};
 
-`REMOVE_ARRAY_ELEMENT` steps have a numeric property "index" (an Array.splice index).
+/*
+ * The INIT_KEY patch step sets a property of the Current Value if it isn't present (index in currentValue).
+ * Since this would be completely useless otherwise, content must be present.
+ */
+declare type PatchStepInitKey = {
+	"type": "INIT_KEY";
+	"index": JSONIndex;
+	"content": any;
+};
 
-It removes the element at that index from the Current Value.
+/*
+ * The REMOVE_ARRAY_ELEMENT patch step splices out a single element from the Current Value.
+ * The Current Value must be an array.
+ * The index used is treated as an Array.splice index.
+ * The element is discarded.
+ */
+declare type PatchStepRemoveArrayElement = {
+	"type": "REMOVE_ARRAY_ELEMENT";
+	"index": number;
+};
 
-### ADD_ARRAY_ELEMENT
+/*
+ * The ADD_ARRAY_ELEMENT patch step splices in a single element into the Current Value.
+ * Index may not be provided - in this case, it pushes the element onto the end.
+ * The element is discarded.
+ */
+declare type PatchStepAddArrayElement = {
+	"type": "ADD_ARRAY_ELEMENT";
+	"index"?: number;
+	"content": any;
+};
 
-`ADD_ARRAY_ELEMENT` steps have an optional numeric property "index" (again, an Array.splice index)...
+/*
+ * The IMPORT patch step loads a JSON file, which we'll refer to as "obj".
+ * For each element in path 'idx', if present, the following is performed:
+ *  obj = obj[idx];
+ * Finally:
+ * If index is present, this finishes with effectively 'SET_KEY': currentValue[index] = obj;
+ * Otherwise, if index is not present, a merge occurs:
+ *  If obj is an Object, all properties in obj are copied into the Current Value.
+ *  If obj is an Array, all elements in obj are pushed onto the Current Value.
+ *  Otherwise, an error occurs (the value is unmergable).
+ */
+declare type PatchStepImport = {
+	"type": "IMPORT";
+	// File Path, default protocol "game:"
+	"src": string;
+	"path"?: JSONIndex[];
+	"index"?: JSONIndex;
+};
 
-... and an arbitrary value "content".
-
-A copy of the content is inserted into the Current Value at the index.
-
-If the index is not present, the content is appended.
-
-### IMPORT
-
-`IMPORT` steps have a string property "src" (a `assets/`-less filename such as `"data/database.json"`), optionally "index" (another string property) and optionally "path" (an array of keys).
-
-JSON is loaded from the file specified with "src". The loaded JSON value (be it an array or object) is called the Loaded Value.
-
-If "path" is present, it's iterated over. For each entry in "path", the Loaded Value is indexed by that item, and the result of that indexing replaces the Loaded Value.
-
-As such, a "path" of `["a", 0]` or `["a", "0"]` on the initial Loaded Value of `{"a": ["hi"]}` results in the Loaded Value becoming the `"hi"` string.
-
-Finally, if "index" is present, the property of the Current Value targetted by "index" is then set to the Loaded Value.
-
-If it is not present, each item of the Loaded Value is appended (if the Loaded Value is an array) or the keys are copied in (if the Loaded Value is an object).
-
-The primary use of this is for cleanup of manual editing workflows, but it can also be useful to cherry-pick objects to avoid copyright issues.
-
-Any implementation that supports full file replacement/addition should allow the JSON to come from an overridden/added file - such files are virtually "added to the game" and should be treated as such.
-
-If an imported JSON file should be patched before import, however, is at the discretion of the implementation, as a particular issue that could come up here is unexpected circular dependencies.
-
-### INCLUDE
-
-`INCLUDE` steps have a string property "src", a path inside the mod's directory. (The value "package.json" would be erroneous due to it being of the wrong format, but would point at the intended file.)
-
-This path points at a JSON file.
-This JSON is treated as a Patch Steps patch and executed on the Current Value.
-Note, however, that this occurs in a separate Patch Steps interpreter, so the Current Value stack is not shared.
-
-### INIT_KEY
-
-`INIT_KEY` steps have a string property "index", and an arbitrary value property "content".
-
-If the Current Value does not have the key "index", as determined by `index in currentValue`, then it is set to "content".
-
-This is useful to create blank arrays/objects for common use.
+/*
+ * The INCLUDE patch step loads a JSON file containing a patch,
+ *  and executes it on the Current Value in a new interpreter.
+ * The current interpreter, and thus the loading, waits for it to complete.
+ */
+declare type PatchStepInclude = {
+	"type": "INCLUDE";
+	// File Path, default protocol "mod:"
+	"src": string;
+};
+```
 
 ## Reference Implementations
+
+A reference ES6 module implementation is available at:
+
+https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-es6.js
 
 A reference CommonJS module implementation is available at:
 
 https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-lib.js
-
-A more integrated Impact module implementation of the patcher (but not the differ) is available at:
-
-https://github.com/20kdc/CLS-20kdc-Code/tree/master/modules/impact/feature/patches
 
 ---
 
