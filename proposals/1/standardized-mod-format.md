@@ -25,9 +25,9 @@ A specification which exactly defines specific terms, and does not define legacy
 
 ### Regarding Implementation
 
-It is important to note that some features of this specification may, themselves, be implemented within mods.
+It is important to note that some features of this specification may, themselves, be implemented within mods or some equivalent.
 This is fine - the implementation of this specification is then a matter of "that modloader + these mods".
-This in particular applies to how CCLoader handles patch files via `simplify`.
+This in particular applies to how CCLoader handles patch files via `simplify`, and how CCInjector requires plugins to handle dependency order & assets.
 
 ## Mod Format
 
@@ -41,35 +41,40 @@ The directory may contain a sub-directory called "assets" (see Asset Handling).
 
 The package.json format describes a mod.
 
-It is a JSON file, with an object containing the following keys ('Optional' allows the key to be missing):
+It is a JSON file, the object being a standardized mod package as described here:
 
 ```
-{
- "name": <String, serves as the mod's ID>,
- "version": <Semver-compliant version string>,
- "ccmodDependencies": <
-  Optional Object - keys are mod IDs, values are semver-compliant version constraints
-  This is used between different mods to establish load order & required other mods.
-  Note that some entries in here may not actually be mods - see Virtual Dependencies for further information.
- >,
- "dependencies": <
-  Optional Object - due to compatibility, this is a bit awkward
-  If ccmodDependencies is provided, keys are Node modules, values are semver-compliant version constraints
-  If ccmodDependencies is NOT provided, this key is effectively renamed to it - meaning keys are mod IDs, not Node modules.
- >,
+declare type Semver = string;
+declare type SemverConstraint = string;
+declare type StandardizedModPackage = {
+    // String, serves as the mod's ID.
+    "name": string;
+    // Version of the mod.
+    "version": Semver;
+    /*
+     * Optional - maps mod IDs or virtual dependency IDs to the versions of them required.
+     * Prefixed with 'ccmod' to prevent possible Node package collision.
+     * If not present, the mod has no dependencies.
+     */
+    "ccmodDependencies"?: { [name: string]: SemverConstraint; };
+    // Optional human-readable string.
+    "description"?: string;
 
- "description": <Optional human-readable string>,
+    // Defaults to false. If true, scripts are loaded as ES6 modules.
+    "module"?: boolean;
+    // Defaults to false. If true, the mod uses require(), and thus may not be sandboxable.
+    "usesRequire"?: boolean;
 
- "postload": <Optional filename of a script>,
- "module": <Optional boolean - if true, all scripts are loaded as ES6 modules, otherwise they aren't. Defaults to false>,
+    // Optional filename of a script to run at the 'postload' stage.
+    "preload"?: string;
+    // Optional filename of a script to run at the 'postload' stage.
+    "postload"?: string;
+    // Optional filename of a script to run at the 'prestart' stage.
+    "prestart"?: string;
 
- "usesRequire": <Optional boolean - if true, "require" is being used by the mod, otherwise it isn't. Defaults to true>,
-}
+    // Adding additional fields may have implementation-dependent effects, including changing behaviors defined in this specification.
+};
 ```
-
-Note that additional unspecified fields may also be present.
-
-These fields may have implementation-dependent effects, including changing behaviors defined in this specification.
 
 ### Asset Handling
 
@@ -88,6 +93,8 @@ Regarding `.json.patch` files, these are treated specially. See Patch Files for 
 ### Patch Files
 
 Patch files are JSON files with the `.json.patch` extension. They contain instructions to patch the relevant `.json` asset (the path of which is gained by removing the `.patch` suffix).
+
+Patch files must still be applied on assets that have been overridden, and thus also on assets that have been created by mods.
 
 The format of a patch file is a tree of Objects.
 
@@ -125,12 +132,11 @@ The behavior for a circular dependency situation is undefined.
 The 'phases' are:
 
 1. `preload`. This is executed before game.compiled.js is executed.
-    (There is no attribute for this phase - it exists for reference)
 2. `postload`. This is executed after game.compiled.js is executed and before game onload (i.e. before `ig.modules["dom.ready"].loaded` is true).
 3. `prestart`. This is executed in a hook wrapping `ig.main`, before `ig.main` itself.
-   (There is no attribute for this phase - it exists for reference)
 4. `main`. This is executed at any time after the game has completely loaded and is running, i.e. `ig.ready` is true, `ig.game` exists, etc.
-   (There is no attribute for this phase - it exists for reference)
+
+There's no attribute for `main` defined in this specification.
 
 ## Conformance Tests
 
