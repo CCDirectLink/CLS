@@ -43,7 +43,7 @@ The package.json format describes a mod.
 
 It is a JSON file, the object being a standardized mod package as described here:
 
-```
+```ts
 declare type Semver = string;
 declare type SemverConstraint = string;
 declare type StandardizedModPackage = {
