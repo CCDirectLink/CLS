@@ -79,7 +79,7 @@ This default protocol is specified in the relevant step's details.
 
 ## Step Formats
 
-```
+```ts
 // In practice, these are functionally identical,
 //  and weak JavaScript typing causes this to be readily apparent.
 declare type JSONIndex = string | number;
