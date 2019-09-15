@@ -94,7 +94,8 @@ declare type PatchStep =
 	PatchStepRemoveArrayElement |
 	PatchStepAddArrayElement |
 	PatchStepImport |
-	PatchStepInclude
+	PatchStepInclude |
+	PatchStepForIn
 ;
 
 /**
@@ -211,7 +212,24 @@ declare type PatchStepInclude = {
 	// File Path, default protocol "mod:"
 	"src": string;
 };
+
+
+/**
+* The FOR-IN patch step takes a value entry from the values property,
+* goes through the body statements,
+* clones and replaces keyword match with the current value entry inside the statement object,
+* and then executes the current statement.
+**/
+declare type PatchStepForIn = {
+	"type": "FOR-IN";
+	"values": string[];
+	// interpreted as a Regular Expression
+	"keyword": string;
+	"body": PatchStep[];
+};
 ```
+
+
 
 ## Reference Implementations
 
