@@ -215,13 +215,13 @@ declare type PatchStepInclude = {
 
 
 /**
-* The FOR-IN patch step takes a value entry from the values property,
+* The FOR_IN patch step takes a value entry from the values property,
 * goes through the body statements,
 * clones and replaces keyword match with the current value entry inside the statement object,
 * and then executes the current statement.
 **/
 declare type PatchStepForIn = {
-	"type": "FOR-IN";
+	"type": "FOR_IN";
 	"values": string[];
 	// interpreted as a Regular Expression
 	"keyword": string;
