@@ -121,6 +121,11 @@ declare class PatchStepMachineState {
 	loader: (defaultProtocol: string, path: string) => Promise<object>;
 	// The current value being operated on.
 	currentValue: object;
+	/* Used by COPY/PASTE to store and 
+	 * retrieve saved values based upon an
+	 * alias.
+	 */  
+	cloneStack: Map;
 	// Used by ENTER/EXIT to place and retrieve parent values.
 	parentStack: object[];
 }
@@ -229,6 +234,8 @@ declare type PatchStepInclude = {
 * goes through the body statements,
 * clones and replaces keyword match with the current value entry inside the statement object,
 * and then executes the current statement.
+* Note: If the keyword is a string, then the values must be an array of strings.
+*       If the keyword is a PatchStepObjectMatch, then the values must be an array of PatchStepObjects.
 **/
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
@@ -283,5 +290,6 @@ https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-lib.js
 ---
 
 ```
-Author: 20kdc (Discord: 234666977765883904)
+Author: 20kdc (Discord: 234666977765883904) 
+        Emileyah (Discord: 208763015657553921)
 ```
