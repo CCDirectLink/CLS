@@ -105,7 +105,8 @@ declare type PatchStep =
 	PatchStepInclude |
 	PatchStepForIn |
 	PatchStepCopy |
-	PatchStepPaste
+	PatchStepPaste |
+	PatchStepComment
 ;
 
 /**
@@ -229,14 +230,14 @@ declare type PatchStepInclude = {
 };
 
 
-/**
-* The FOR_IN patch step takes a value entry from the values property,
-* goes through the body statements,
-* clones and replaces keyword match with the current value entry inside the statement object,
-* and then executes the current statement.
-* Note: If the keyword is a string, then the values must be an array of strings.
-*       If the keyword is a PatchStepObjectMatch, then the values must be an array of PatchStepObjects.
-**/
+/*
+ * The FOR_IN patch step takes a value entry from the values property,
+ * goes through the body statements,
+ * clones and replaces keyword match with the current value entry inside the statement object,
+ * and then executes the current statement.
+ * Note: If the keyword is a string, then the values must be an array of strings.
+ *       If the keyword is a PatchStepObjectMatch, then the values must be an array of PatchStepObjects.
+ */
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
 	"values": string[] | PatchStepObject[];
@@ -246,9 +247,9 @@ declare type PatchStepForIn = {
 };
 
 /*
-* The COPY patch step takes the Current Value stored in the Interpreter 
-* and maps it to the provided alias key (inside cloneMap).
-*/
+ * The COPY patch step takes the Current Value stored in the Interpreter 
+ * and maps it to the provided alias key (inside cloneMap).
+ */
 declare type PatchStepCopy = {
 	"type": "COPY";
 	"alias": string;
@@ -256,22 +257,30 @@ declare type PatchStepCopy = {
 
 
 /**
-* The PASTE patch step retrieves the stored value based upon 
-* the provided alias (to check in cloneMap) and merges it with the Current Value.
-*
-* If the Current Value is an Array, then the index can be a number or blank.
-* The stored value will be pushed to the end if the index is blank,
-* or put into the positions specified index.
-*
-* If the Current Value is an Object, then the index can be a number or a string.
-* The stored value will be set to the property named after the index provided.
-*
-* If the Current Value is none of these, then it will throw an error.
-*/
+ * The PASTE patch step retrieves the stored value based upon 
+ * the provided alias (to check in cloneMap) and merges it with the Current Value.
+ *
+ * If the Current Value is an Array, then the index can be a number or blank.
+ * The stored value will be pushed to the end if the index is blank,
+ * or put into the positions specified index.
+ *
+ * If the Current Value is an Object, then the index can be a number or a string.
+ * The stored value will be set to the property named after the index provided.
+ *
+ * If the Current Value is none of these, then it will throw an error.
+ */
 declare type PatchStepPaste = {
 	"type": "PASTE";
 	"alias": string;
 	"index"?: JSONIndex;
+};
+
+/*
+ * Displays value property into the dev console.
+ */
+declare type PatchStepComment = {
+	"type": "COMMENT";
+	"value": string | object;
 };
 ```
 
