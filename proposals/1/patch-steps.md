@@ -234,7 +234,7 @@ declare type PatchStepInclude = {
 /*
  * The FOR_IN patch step takes a value entry from the values property,
  * goes through the body statements,
- * clones and replaces keyword match with the current value entry inside the statement object,
+ * clones and replaces keyword (a RegExp string) match with the current value entry inside the statement object,
  * and then executes the current statement.
  * Note: If the keyword is a string, then the values must be an array of strings.
  *       If the keyword is a PatchStepObjectMatch, then the values must be an array of PatchStepObjects.
