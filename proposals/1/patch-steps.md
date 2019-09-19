@@ -91,7 +91,8 @@ declare type PatchStepObject = {
 };
 
 declare type PatchStepObjectMatch = {
-	[name: string]: RegExp;
+	// Interpreted as a RegExp
+	[name: string]: string;
 };
 
 declare type PatchStep =
@@ -241,7 +242,6 @@ declare type PatchStepInclude = {
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
 	"values": string[] | PatchStepObject[];
-	// interpreted as a Regular Expression
 	"keyword": string | PatchStepObjectMatch;
 	"body": PatchStepsPatch;
 };
