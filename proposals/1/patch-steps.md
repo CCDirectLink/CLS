@@ -86,6 +86,14 @@ declare type JSONIndex = string | number;
 
 declare type PatchStepsPatch = PatchStep[];
 
+declare type PatchStepObject = {
+	[name: string]: string; 
+};
+
+declare type PatchStepObjectMatch = {
+	[name: string]: RegExp;
+};
+
 declare type PatchStep =
 	PatchStepEnter |
 	PatchStepExit |
@@ -95,7 +103,9 @@ declare type PatchStep =
 	PatchStepAddArrayElement |
 	PatchStepImport |
 	PatchStepInclude |
-	PatchStepForIn
+	PatchStepForIn |
+	PatchStepCopy |
+	PatchStepPaste
 ;
 
 /**
@@ -222,10 +232,39 @@ declare type PatchStepInclude = {
 **/
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
-	"values": string[];
+	"values": string[] | PatchStepObject[];
 	// interpreted as a Regular Expression
-	"keyword": string;
-	"body": PatchStep[];
+	"keyword": string | PatchStepObjectMatch;
+	"body": PatchStepsPatch;
+};
+
+/*
+* The COPY patch step takes the Current Value stored in the Interpreter 
+* and maps it to the provided alias key.
+*/
+declare type PatchStepCopy = {
+	"type": "COPY";
+	"alias": string;
+};
+
+
+/**
+* The PASTE patch step retrieves the stored value based upon 
+* the provided alias and merges it with the Current Value.
+*
+* If the Current Value is an Array, then the index can be a number or blank.
+* The stored value will be pushed to the end if the index is blank,
+* or put into the positions specified index.
+*
+* If the Current Value is an Object, then the index can be a number or a string.
+* The stored value will be set to the property named after the index provided.
+*
+* If the Current Value is none of these, then it will throw an error.
+*/
+declare type PatchStepPaste = {
+	"type": "PASTE";
+	"alias": string;
+	"index"?: JSONIndex;
 };
 ```
 
