@@ -125,7 +125,7 @@ declare class PatchStepMachineState {
 	 * retrieve saved values based upon an
 	 * alias.
 	 */  
-	cloneStack: Map;
+	cloneMap: Map;
 	// Used by ENTER/EXIT to place and retrieve parent values.
 	parentStack: object[];
 }
@@ -247,7 +247,7 @@ declare type PatchStepForIn = {
 
 /*
 * The COPY patch step takes the Current Value stored in the Interpreter 
-* and maps it to the provided alias key.
+* and maps it to the provided alias key (inside cloneMap).
 */
 declare type PatchStepCopy = {
 	"type": "COPY";
@@ -257,7 +257,7 @@ declare type PatchStepCopy = {
 
 /**
 * The PASTE patch step retrieves the stored value based upon 
-* the provided alias and merges it with the Current Value.
+* the provided alias (to check in cloneMap) and merges it with the Current Value.
 *
 * If the Current Value is an Array, then the index can be a number or blank.
 * The stored value will be pushed to the end if the index is blank,
