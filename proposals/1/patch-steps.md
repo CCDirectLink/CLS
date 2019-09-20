@@ -116,11 +116,13 @@ declare type PatchStep =
  * Do not confuse with internal structures used by any specific implementation.
  */
 declare class PatchStepMachineState {
-	/*
-	 * Decodes a path or URL according to the 'File Paths' chapter and retrieves that object.
+	// Retrieves the object from the path.
+	loader: (path: string) => Promise<object>;
+	/* 
+	 * Decodes a path or URL according to the 'File Paths' chapter.
 	 * The contextual conversion is specified as defaultProtocol.
 	 */
-	loader: (defaultProtocol: string, path: string) => Promise<object>;
+	pathResolver: (defaultProtocol: string, path: string) => string;
 	// The current value being operated on.
 	currentValue: object;
 	/* Used by COPY/PASTE to store and 
