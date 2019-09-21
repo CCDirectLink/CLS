@@ -122,7 +122,7 @@ declare class PatchStepMachineState {
 	 * Decodes a path or URL according to the 'File Paths' chapter.
 	 * The contextual conversion is specified as defaultProtocol.
 	 */
-	pathResolver: (defaultProtocol: string, path: string) => string;
+	pathResolver: (path: string,defaultProtocol: string) => string;
 	// The current value being operated on.
 	currentValue: object;
 	/* Used by COPY/PASTE to store and 
