@@ -136,7 +136,7 @@ declare class ErrorDisplayHandler {
 	removeLastStep(): void;
 	getLastStep(): void;
 	// Triggers an exception.	
-	throwError(type, message): void;
+	throwError(type: string, message: string): void;
 	/*
 	 * Prints all the contexts sequentially.
 	 * This includes the steps and errors.
