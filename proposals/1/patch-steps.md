@@ -86,6 +86,15 @@ declare type JSONIndex = string | number;
 
 declare type PatchStepsPatch = PatchStep[];
 
+declare type PatchStepObject = {
+	[name: string]: string; 
+};
+
+declare type PatchStepObjectMatch = {
+	// Interpreted as a RegExp
+	[name: string]: string;
+};
+
 declare type PatchStep =
 	PatchStepEnter |
 	PatchStepExit |
@@ -94,8 +103,52 @@ declare type PatchStep =
 	PatchStepRemoveArrayElement |
 	PatchStepAddArrayElement |
 	PatchStepImport |
-	PatchStepInclude
+	PatchStepInclude |
+	PatchStepForIn |
+	PatchStepCopy |
+	PatchStepPaste |
+	PatchStepComment |
+	PatchStepDebug
 ;
+
+declare type ErrorStep = {
+	type: string;
+	name: string;
+	index: number;
+
+};
+
+/*
+ * This is only a guideline.
+ * 
+ * Recommendations:
+ * - All contexts additions or removals should be handled by whatever
+ *   creates a new instance of the PatchStepMachineState. 
+ * - The Line management should be handled by whatever executes steps.
+ * - Errors should be thrown by PatchSteps, unless a PatchStep doesn't exist.
+ * - The PatchStepMachineState should be the only one to call print
+ *   whenever an exception occurs.
+ */
+declare class ErrorDisplayHandler {
+	
+	/*
+	 * Path to a PatchStep file.
+	 * Establishes a new context.
+	 */
+	addFile(path: string): void;
+	// Removes the most recent context.
+	removeLastFile(): void;
+	addStep(stepIndex: number, stepName: string): void;
+	removeLastStep(): void;
+	getLastStep(): ErrorStep;
+	// Triggers an exception.	
+	throwError(type: string, message: string): void;
+	/*
+	 * Prints all the contexts sequentially.
+	 * This includes the steps and errors.
+	 */
+	print(): void;
+}
 
 /**
  * Abstract machine state for a Patch Steps interpreter;
@@ -103,15 +156,26 @@ declare type PatchStep =
  * Do not confuse with internal structures used by any specific implementation.
  */
 declare class PatchStepMachineState {
-	/*
-	 * Decodes a path or URL according to the 'File Paths' chapter and retrieves that object.
+	// Retrieves the object from the path.
+	loader: (path: string) => Promise<object>;
+	/* 
+	 * Decodes a path or URL according to the 'File Paths' chapter.
 	 * The contextual conversion is specified as defaultProtocol.
 	 */
-	loader: (defaultProtocol: string, path: string) => Promise<object>;
+	pathResolver: (path: string, defaultProtocol: string) => string;
+	errorDisplayHandler: ErrorDisplayHandler;
 	// The current value being operated on.
 	currentValue: object;
+	/* 
+	 * Used by COPY/PASTE to store and 
+	 * retrieve saved values based upon an
+	 * alias.
+	 */  
+	cloneMap: Map;
 	// Used by ENTER/EXIT to place and retrieve parent values.
 	parentStack: object[];
+	// Enables/Disables comments
+	debug: boolean;
 }
 
 /*
@@ -119,6 +183,7 @@ declare class PatchStepMachineState {
  *  and then sets the Current Value to currentValue[index].
  * However, if the "index" is an array, this instead acts as multiple ENTER patch steps,
  *  one with each element of the array replacing the index.
+ * If an ENTER leads to Current Value being undefined, then it will throw an error.
  */
 declare type PatchStepEnter = {
 	"type": "ENTER";
@@ -130,6 +195,7 @@ declare type PatchStepEnter = {
  * It sets the Current Value to a value popped off the parent stack.
  * Like ENTER, it can be applied multiple times.
  * If 'count' is present, EXIT will be applied that many times.
+ * If the stack is empty and EXIT hasn't finished, then it will throw an error.
  */
 declare type PatchStepExit = {
 	"type": "EXIT";
@@ -211,7 +277,66 @@ declare type PatchStepInclude = {
 	// File Path, default protocol "mod:"
 	"src": string;
 };
+
+
+/*
+ * The FOR_IN patch step takes a value entry from the values property,
+ * goes through the body statements,
+ * clones and replaces keyword (a RegExp string) match with the current value entry inside the statement object,
+ * and then executes the current statement.
+ * Note: If the keyword is a string, then the values must be an array of strings.
+ *       If the keyword is a PatchStepObjectMatch, then the values must be an array of PatchStepObjects.
+ */
+declare type PatchStepForIn = {
+	"type": "FOR_IN";
+	"values": string[] | PatchStepObject[];
+	"keyword": string | PatchStepObjectMatch;
+	"body": PatchStepsPatch;
+};
+
+/*
+ * The COPY patch step takes the Current Value stored in the Interpreter 
+ * and maps it to the provided alias key (inside cloneMap).
+ */
+declare type PatchStepCopy = {
+	"type": "COPY";
+	"alias": string;
+};
+
+
+/**
+ * The PASTE patch step retrieves the stored value based upon 
+ * the provided alias (to check in cloneMap) and merges it with the Current Value.
+ *
+ * If the Current Value is an Array, then the index can be a number or blank.
+ * The stored value will be pushed to the end if the index is blank,
+ * or put into the positions specified index.
+ *
+ * If the Current Value is an Object, then the index can be a number or a string.
+ * The stored value will be set to the property named after the index provided.
+ *
+ * If the Current Value is none of these, then it will throw an error.
+ */
+declare type PatchStepPaste = {
+	"type": "PASTE";
+	"alias": string;
+	"index"?: JSONIndex;
+};
+
+// Displays value property into the dev console.
+declare type PatchStepComment = {
+	"type": "COMMENT";
+	"value": string | object;
+};
+
+// Sets the debug state
+declare type PatchStepDebug = {
+	"type": "DEBUG",
+	"value": boolean;
+};
 ```
+
+
 
 ## Reference Implementations
 
@@ -226,5 +351,6 @@ https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-lib.js
 ---
 
 ```
-Author: 20kdc (Discord: 234666977765883904)
+Author: 20kdc (Discord: 234666977765883904) 
+        Emileyah (Discord: 208763015657553921)
 ```
