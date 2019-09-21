@@ -132,15 +132,14 @@ declare class ErrorDisplayHandler {
 	addFile(path: string): void;
 	// Removes the most recent context.
 	removeLastFile(): void;
-	// Line here just means a PatchStep step.
-	addLine(num: number, name: string): void;
-	removeLastLine(): void;
-	getLastLine(): void;
+	addStep(stepIndex: number, stepName: string): void;
+	removeLastStep(): void;
+	getLastStep(): void;
 	// Triggers an exception.	
 	throwError(type, message): void;
 	/*
 	 * Prints all the contexts sequentially.
-	 * This includes the lines and errors.
+	 * This includes the steps and errors.
 	 */
 	print(): void;
 }
