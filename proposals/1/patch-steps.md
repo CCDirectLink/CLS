@@ -148,7 +148,8 @@ declare class PatchStepMachineState {
 	errorHandler: ErrorHandler;
 	// The current value being operated on.
 	currentValue: object;
-	/* Used by COPY/PASTE to store and 
+	/* 
+	 * Used by COPY/PASTE to store and 
 	 * retrieve saved values based upon an
 	 * alias.
 	 */  
