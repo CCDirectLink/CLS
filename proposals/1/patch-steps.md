@@ -118,7 +118,7 @@ declare type PatchStep =
  * - All contexts additions or removals should be handled by whatever
  *   creates a new instance of the PatchStepMachineState. 
  * - The Line management should be handled by whatever executes steps.
- * - Errors should be thrown by PatchSteps, unless if a PatchStep doesn't exist.
+ * - Errors should be thrown by PatchSteps, unless a PatchStep doesn't exist.
  * - The PatchStepMachineState should be the only one to call print
  *   whenever an exception occurs.
  */
