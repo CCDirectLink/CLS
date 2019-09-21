@@ -111,6 +111,12 @@ declare type PatchStep =
 	PatchStepDebug
 ;
 
+declare type ErrorStep = {
+	type: string;
+	name: string;
+	index: number;
+
+};
 
 /*
  * This is only a guideline.
@@ -134,7 +140,7 @@ declare class ErrorDisplayHandler {
 	removeLastFile(): void;
 	addStep(stepIndex: number, stepName: string): void;
 	removeLastStep(): void;
-	getLastStep(): {type: string, name: string, index: number};
+	getLastStep(): ErrorStep;
 	// Triggers an exception.	
 	throwError(type: string, message: string): void;
 	/*
