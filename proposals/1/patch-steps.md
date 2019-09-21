@@ -166,7 +166,6 @@ declare class PatchStepMachineState {
  */
 declare type PatchStepEnter = {
 	"type": "ENTER";
-	// If not present, will throw an error.
 	"index": JSONIndex[] | JSONIndex;
 };
 
@@ -192,7 +191,6 @@ declare type PatchStepExit = {
  */
 declare type PatchStepSetKey = {
 	"type": "SET_KEY";
-	// throw an error if not set
 	"index": JSONIndex;
 	"content"?: any;
 };
@@ -215,7 +213,6 @@ declare type PatchStepInitKey = {
  */
 declare type PatchStepRemoveArrayElement = {
 	"type": "REMOVE_ARRAY_ELEMENT";
-	// throw an error if not set
 	"index": number;
 };
 
@@ -247,14 +244,8 @@ declare type PatchStepAddArrayElement = {
  */
 declare type PatchStepImport = {
 	"type": "IMPORT";
-	/*
-	 * File Path, default protocol "game:"
-	 * If not present, throw an error.
-	 */
+	// File Path, default protocol "game:"
 	"src": string;
-	/*
-	 * If present and not an array, throw an error.
-	 */
 	"path"?: JSONIndex[];
 	"index"?: JSONIndex;
 };
@@ -266,10 +257,7 @@ declare type PatchStepImport = {
  */
 declare type PatchStepInclude = {
 	"type": "INCLUDE";
-	/*
-	 * File Path, default protocol "mod:"
-	 * If not present, throw an error.
-	 */
+	// File Path, default protocol "mod:"
 	"src": string;
 };
 
@@ -284,11 +272,8 @@ declare type PatchStepInclude = {
  */
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
-	// If falsey value, throw an error
 	"values": string[] | PatchStepObject[];
-	// If falsey value, throw an error
 	"keyword": string | PatchStepObjectMatch;
-	// If not an array, throw an error.
 	"body": PatchStepsPatch;
 };
 
@@ -298,7 +283,6 @@ declare type PatchStepForIn = {
  */
 declare type PatchStepCopy = {
 	"type": "COPY";
-	// If falsey value, throw an error.
 	"alias": string;
 };
 
@@ -318,7 +302,6 @@ declare type PatchStepCopy = {
  */
 declare type PatchStepPaste = {
 	"type": "PASTE";
-	// If falsey value, throw an error.
 	"alias": string;
 	"index"?: JSONIndex;
 };
