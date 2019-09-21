@@ -237,7 +237,7 @@ declare type PatchStepRemoveArrayElement = {
 declare type PatchStepAddArrayElement = {
 	"type": "ADD_ARRAY_ELEMENT";
 	/*
-	 * throw an error if the value is not NaN, Infinity, or undefined.
+	 * throw an error if the value is NaN, Infinity, or undefined.
 	 * index must be a finite number if set.
 	 */
 	"index"?: number;
