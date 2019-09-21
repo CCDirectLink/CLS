@@ -134,7 +134,7 @@ declare class ErrorDisplayHandler {
 	removeLastFile(): void;
 	addStep(stepIndex: number, stepName: string): void;
 	removeLastStep(): void;
-	getLastStep(): {type: "Line", name: string, index: number};
+	getLastStep(): {type: string, name: string, index: number};
 	// Triggers an exception.	
 	throwError(type: string, message: string): void;
 	/*
