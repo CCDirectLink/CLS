@@ -107,7 +107,8 @@ declare type PatchStep =
 	PatchStepForIn |
 	PatchStepCopy |
 	PatchStepPaste |
-	PatchStepComment
+	PatchStepComment |
+	PatchStepDebug
 ;
 
 
@@ -168,6 +169,8 @@ declare class PatchStepMachineState {
 	cloneMap: Map;
 	// Used by ENTER/EXIT to place and retrieve parent values.
 	parentStack: object[];
+	// Enables/Disables comments
+	debug: boolean;
 }
 
 /*
@@ -319,12 +322,16 @@ declare type PatchStepPaste = {
 	"index"?: JSONIndex;
 };
 
-/*
- * Displays value property into the dev console.
- */
+// Displays value property into the dev console.
 declare type PatchStepComment = {
 	"type": "COMMENT";
 	"value": string | object;
+};
+
+// Sets the debug state
+declare type PatchStepDebug = {
+	"type": "DEBUG",
+	"value": boolean;
 };
 ```
 
