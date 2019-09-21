@@ -110,6 +110,28 @@ declare type PatchStep =
 	PatchStepComment
 ;
 
+declare class ErrorHandler {
+	
+	/*
+	 * Path to a PatchStep file.
+	 * Establishes a new context.
+	 */
+	addFile(path: string): void;
+	// Removes the most recent context.
+	removeLastFile(): void;
+	// Line here just means a PatchStep step.
+	addLine(num: number, name: string): void;
+	removeLastLine(): void;
+	getLastLine(): void;
+	// Triggers an exception.	
+	throwError(type, message): void;
+	/*
+	 * Prints all the contexts sequentially.
+	 * This includes the lines and errors.
+	 */
+	print(): void;
+}
+
 /**
  * Abstract machine state for a Patch Steps interpreter;
  *  not a formal part of the format, merely a guideline.
@@ -122,7 +144,8 @@ declare class PatchStepMachineState {
 	 * Decodes a path or URL according to the 'File Paths' chapter.
 	 * The contextual conversion is specified as defaultProtocol.
 	 */
-	pathResolver: (path: string,defaultProtocol: string) => string;
+	pathResolver: (path: string, defaultProtocol: string) => string;
+	errorHandler: ErrorHandler;
 	// The current value being operated on.
 	currentValue: object;
 	/* Used by COPY/PASTE to store and 
@@ -139,9 +162,11 @@ declare class PatchStepMachineState {
  *  and then sets the Current Value to currentValue[index].
  * However, if the "index" is an array, this instead acts as multiple ENTER patch steps,
  *  one with each element of the array replacing the index.
+ * If an ENTER leads to Current Value being undefined, then it will throw an error.
  */
 declare type PatchStepEnter = {
 	"type": "ENTER";
+	// If not present, will throw an error.
 	"index": JSONIndex[] | JSONIndex;
 };
 
@@ -150,6 +175,7 @@ declare type PatchStepEnter = {
  * It sets the Current Value to a value popped off the parent stack.
  * Like ENTER, it can be applied multiple times.
  * If 'count' is present, EXIT will be applied that many times.
+ * If the stack is empty and EXIT hasn't finished, then it will throw an error.
  */
 declare type PatchStepExit = {
 	"type": "EXIT";
@@ -166,6 +192,7 @@ declare type PatchStepExit = {
  */
 declare type PatchStepSetKey = {
 	"type": "SET_KEY";
+	// throw an error if not set
 	"index": JSONIndex;
 	"content"?: any;
 };
@@ -188,6 +215,7 @@ declare type PatchStepInitKey = {
  */
 declare type PatchStepRemoveArrayElement = {
 	"type": "REMOVE_ARRAY_ELEMENT";
+	// throw an error if not set
 	"index": number;
 };
 
@@ -198,6 +226,10 @@ declare type PatchStepRemoveArrayElement = {
  */
 declare type PatchStepAddArrayElement = {
 	"type": "ADD_ARRAY_ELEMENT";
+	/*
+	 * throw an error if the value is not NaN, Infinity, or undefined.
+	 * index must be a finite number if set.
+	 */
 	"index"?: number;
 	"content": any;
 };
@@ -215,8 +247,14 @@ declare type PatchStepAddArrayElement = {
  */
 declare type PatchStepImport = {
 	"type": "IMPORT";
-	// File Path, default protocol "game:"
+	/*
+	 * File Path, default protocol "game:"
+	 * If not present, throw an error.
+	 */
 	"src": string;
+	/*
+	 * If present and not an array, throw an error.
+	 */
 	"path"?: JSONIndex[];
 	"index"?: JSONIndex;
 };
@@ -228,7 +266,10 @@ declare type PatchStepImport = {
  */
 declare type PatchStepInclude = {
 	"type": "INCLUDE";
-	// File Path, default protocol "mod:"
+	/*
+	 * File Path, default protocol "mod:"
+	 * If not present, throw an error.
+	 */
 	"src": string;
 };
 
@@ -243,8 +284,11 @@ declare type PatchStepInclude = {
  */
 declare type PatchStepForIn = {
 	"type": "FOR_IN";
+	// If falsey value, throw an error
 	"values": string[] | PatchStepObject[];
+	// If falsey value, throw an error
 	"keyword": string | PatchStepObjectMatch;
+	// If not an array, throw an error.
 	"body": PatchStepsPatch;
 };
 
@@ -254,6 +298,7 @@ declare type PatchStepForIn = {
  */
 declare type PatchStepCopy = {
 	"type": "COPY";
+	// If falsey value, throw an error.
 	"alias": string;
 };
 
@@ -273,6 +318,7 @@ declare type PatchStepCopy = {
  */
 declare type PatchStepPaste = {
 	"type": "PASTE";
+	// If falsey value, throw an error.
 	"alias": string;
 	"index"?: JSONIndex;
 };
