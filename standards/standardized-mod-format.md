@@ -72,8 +72,53 @@ declare type StandardizedModPackage = {
     // Optional filename of a script to run at the 'prestart' stage.
     "prestart"?: string;
 
+    // Optional filename of a 'plugin' script. (See "Plugins")
+    "plugin"?: string;
+
     // Adding additional fields may have implementation-dependent effects, including changing behaviors defined in this specification.
 };
+```
+
+### Global Environment
+
+The global environment in which mods run is altered to add various information.
+
+#### Active Mods
+
+`window.activeMods` is an Array containing instances of the Mod interface.
+
+It is initialized before `preload` (see "The Load Order").
+
+```ts
+// Do be aware that this is a subset of the actual interface exposed by the modloader.
+// However, to simplify things in the event the modloader changes or another modloader is created, this is what is documented.
+interface Mod {
+	get name(): string | undefined;
+	get version(): string | undefined;
+	get description(): string | undefined;
+	get baseDirectory(): string;
+}
+```
+
+#### Plugins
+
+Plugins are a special form of script.
+
+They are always ES6 modules, that export a default class that extends a global class called `Plugin`.
+
+```ts
+class Plugin {
+	// parentMod is the mod that contains the plugin script.
+	constructor(parentMod: Mod);
+	// For all loading phases supported by the loader, an equivalent stub exists.
+	// The loading process is blocked on the returned promise, if any.
+	// These stubs are called at the respective times,
+	//  as if the mod containing the plugin had additional scripts to run at those times.
+	// It is undefined whether defined scripts occur before or after plugin scripts.
+	preload(): Promise<void>;
+	postload(): Promise<void>;
+	prestart(): Promise<void>;
+}
 ```
 
 ### Asset Handling
@@ -96,7 +141,13 @@ Patch files are JSON files with the `.json.patch` extension. They contain instru
 
 Patch files must still be applied on assets that have been overridden, and thus also on assets that have been created by mods.
 
-The format of a patch file is a tree of Objects.
+There are two patch file formats: The old format and Patch Steps. (Patch Steps is recorded in a separate standard.)
+
+### Patch Files (Old Format)
+
+The format of an old-format patch file is a tree of Objects.
+
+(This implies that the format of an old-format patch file is always an Object.)
 
 Running a patch file follows a recursive routine with the form (current patch object, current target object).
 (The current target object is treated the same regardless of actual type.)
@@ -146,4 +197,6 @@ These mods are CCStandardizedModsConformanceTest and CCZZStandardizedModsConform
 ```
 Author: 20kdc
 ```
+
+(However, it is to be noted that this specification describes existing behavior of projects. Said existing behavior was not written by me (20kdc).)
 
