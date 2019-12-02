@@ -79,10 +79,6 @@ declare type StandardizedModPackage = {
 };
 ```
 
-### Global Environment
-
-The global environment in which mods run is altered to add various information.
-
 #### Active Mods
 
 `window.activeMods` is an Array containing instances of the Mod interface.
@@ -91,7 +87,6 @@ It is initialized before `preload` (see "The Load Order").
 
 ```ts
 // Do be aware that this is a subset of the actual interface exposed by the modloader.
-// However, to simplify things in the event the modloader changes or another modloader is created, this is what is documented.
 interface Mod {
 	get name(): string | undefined;
 	get version(): string | undefined;
@@ -197,6 +192,3 @@ These mods are CCStandardizedModsConformanceTest and CCZZStandardizedModsConform
 ```
 Author: 20kdc
 ```
-
-(However, it is to be noted that this specification describes existing behavior of projects. Said existing behavior was not written by me (20kdc).)
-
