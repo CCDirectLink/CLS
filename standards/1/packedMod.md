@@ -1,30 +1,15 @@
 # Packed Mods
 
-Standard for packed CrossCode mods. This should simplify sharing and installation of mods.
+Standard for packed CrossCode mods. This is intended simplify sharing and installation of mods.
 
-## Current Situation / Problems
+## Package
 
-Mods have to be unzip by the user and installed by manually moving them into the mods folder. "Packed mods" are not standardized (rar, 7zip, tar.gz, ...). Not every OS supports every format.
+A package must:
+* be a zip file (<https://www.iana.org/assignments/media-types/application/zip>)
+* have the extension `.ccmod`
+* contain the files required for the mod
+* contain package.json in the main directory (see unpacked mods)
 
-## Solution
-
-Standard for packed mods
-
-* zip of a mod with the extension `.ccmod` (<https://www.iana.org/assignments/media-types/application/zip>)
-* requires package.json in the main directory (see unpacked mods)
-
-### Advantage
-
-* Simplified installation (file association)
-* Standardized container format and structure
-* Easy purpose recognition after downloads (`What was this for?`)
-
-### Disadvantage
-
-* More dependencies (if the optional part is implemented)
-* System/OS dependent parts (if the optional part is implemented)
-* Difficulties in testing increase (if the optional part is implemented)
-* Higher programming costs
 
 ## Requirements and dependencies
 
@@ -263,7 +248,7 @@ Installed for: b1dfa4d4 (C:\Program Files (x86)\Steam\steamapps\common\CrossCode
 Install mod? (y/n):
 ```
 
-## Notes
+## Conflict handling
 
 Conflict handling and the installation of already installed mods is handled tool specific.
 
