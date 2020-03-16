@@ -342,11 +342,11 @@ declare type PatchStepDebug = {
 
 A reference ES6 module implementation is available at:
 
-https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-es6.js
+https://github.com/ac2pic/CLS-20kdc-Code/blob/master/tools/patch-steps-es6.js
 
 A reference CommonJS module implementation is available at:
 
-https://github.com/20kdc/CLS-20kdc-Code/blob/master/tools/patch-steps-lib.js
+https://gitlab.com/ac2pic/patch-steps-lib
 
 ---
 

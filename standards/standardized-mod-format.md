@@ -183,7 +183,7 @@ The 'phases' are:
 
 ## Conformance Tests
 
-A pair of mods implementing a conformance test is available at: https://github.com/20kdc/CLS-20kdc-Code/blob/master/mods/
+A pair of mods implementing a conformance test is available at: https://github.com/ac2pic/CLS-20kdc-Code/blob/master/mods/
 
 These mods are CCStandardizedModsConformanceTest and CCZZStandardizedModsConformanceTestDependency.
 
