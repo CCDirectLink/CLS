@@ -79,7 +79,7 @@ The specification must include the loading stage at which the interface becomes 
 
 ## Native Dependencies
 
-Should an API require native dependencies it bust either require dummy implemention in the event that none are available or provide a clearly defined way to check if it is.
+Should an API require native dependencies it must either require dummy implemention in the event that none are available or provide a clearly defined way to check if it is.
 
 ## Implementation Requirements
 
