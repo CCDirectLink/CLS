@@ -41,7 +41,7 @@ For example:
 
 `ccmod.resources` is a simple and rather intuitive name.
 
-`ccmod.crossCodeModdingResouceManager` is both long and includes repetition when combined with `ccmod`.
+`ccmod.crossCodeModdingResourceManager` is both long and includes repetition when combined with `ccmod`.
 
 #### Members and Fields
 
@@ -53,7 +53,7 @@ For example:
 
 `ccmod.resources.load` takes scope into account
 
-`ccmod.resources.loadResouce` does not takes scope into account
+`ccmod.resources.loadResource` does not takes scope into account
 
 ### Fields
 
