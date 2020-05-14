@@ -94,7 +94,7 @@ It must be possible to implement the specification
 **Version 1.0.0**  
 **Stage: preload**
 
-An API that manages hooks other than `ig.Class.inject`
+An API that manages hooks other than `ig.Class#inject`
 
 ### func
 
