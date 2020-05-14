@@ -32,7 +32,7 @@ As a standard library is expected to be used by every mod it should not require 
 
 #### Class names
 
-All standard libary APIs must only be accessable through a `ccmod` object. As such the naming should consider using simple names as class names.
+All standard libary APIs must only define access through a `ccmod` object. As such the naming should consider using simple names as class names. Note that an implementation may allow additional non-standard access methods.
 
 Requirement:
 * A name must be written in camelCase. 
