@@ -124,5 +124,13 @@ The function will return `true` if its target was hooked successfully.
 
 
 ```ts
-function func(obj: any, name: string, callback: (original: any) => any): bool;
+/**
+ * Hooks a function of an object.
+ *
+ * @param obj       The object to be hooked
+ * @param name      The name of the function inside the object
+ * @param callback  The callback that is called when the function is accessed
+ * @returns         Returns true if hook was successful
+ */
+function func(obj: any, name: string, callback: (original: any) => any): boolean;
 ```
