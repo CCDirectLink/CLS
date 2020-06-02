@@ -1,30 +1,12 @@
 # Standard Mod Library
 
-## Current Situation
-
-Currently, there exists no acceptable API for mods to easily perform certain tasks non-destructively. For example, if one mod wants to modify the menu, it needs to work around other mods doing the same. At the moment these tasks are most commonly handled through the `Simplify` API, but this mod is outdated, messy, and contains CCLoader-specific code.
-
-## Solution
-
-This problem can be solved by defining a set of APIs in CLS to be implemented by modloaders and used by mods to perform these common tasks. This set of APIs will be collectively referred to below as the "Standard Library," or "stdlib" for short.
-
-### Advantages
-
-* Simple interfaces for mod developers; porting between modloaders becomes trivial.
-* Possibility of shared code between modloaders (see `API specification requirements` > `Implementation requirements`).
-* Better documentation.
-
-### Disadvantages
-
-* The stdlib specification needs to be created in CLS first.
-* A Standard Library "mod" needs special treatment from all modloaders (See `Load order`).
-* The stdlib needs to be designed carefully to allow for future changes and/or expansion.
+CLS defines a set of APIs to be implemented by modloaders and used by mods to perform these common tasks. This set of APIs will be collectively referred to below as the "Standard Library," or "stdlib" for short.
 
 ## Implementation details
 
 ### Load order
 
-As a Standard Library may be used by (i.e. a dependency of) any other mod, it ideally should not have any dependencies of its own. Thus, a modloader should load the Standard Library before all other mods.
+As a Standard Library may be used by (i.e. a dependency of) any other mod, it must not have any dependencies to mods outside the Standard Library of its own. Thus, a modloader must load the Standard Library before all other mods.
 
 ## API specification requirements
 
@@ -34,11 +16,9 @@ As a Standard Library may be used by (i.e. a dependency of) any other mod, it id
 
 The Standard Library must use a `ccmod` Javascript object at global scope as its only entry point. The properties of this `ccmod` object should only consist of references to zero or more **packages**. A package is itself a Javascript object that can have zero or more classes, methods, fields, or sub-packages as its properties.
 
-Since all references to packages in the stdlib must be routed through the `ccmod` object, designers are free to use simple package names without fear of polluting the global namespace.
+All references to packages in the stdlib must be routed through the `ccmod` object. An implementation of the Standard Library may have additional non-standard ways to access its contents.
 
-(Note that an implementation of the Standard Library may have additional non-standard ways to access its contents.)
-
-Requirements:
+Requirement:
 * A package name must be in `camelCase`.
 * A package name should strive to be as simple as possible; prefer subpackages to long package names.
 
